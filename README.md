@@ -7,8 +7,8 @@ Use the login flow as usual, but in the end logout, saving the session.
 ```csharp
 var session = ....
 var authClient = new LiveAuthClient("xxxx");
-var res = await authClient.InitializeWithLocal(session, scopes);
-var client = LiveConnectClient(Session);
+var res = await authClient.InitializeWithLocalAsync(session, scopes);
+var client = new LiveConnectClient(Session);
 ```
 1. Introduction
 ---------------
