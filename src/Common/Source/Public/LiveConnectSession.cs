@@ -42,7 +42,7 @@
             }
         }
 #endif
-        public LiveAuthClient AuthClient { get; set; }
+        internal LiveAuthClient AuthClient { get; set; }
 
         #endregion
     }
