@@ -9,12 +9,12 @@
 
         #region Constructors
 
-        internal LiveConnectSession(LiveAuthClient authClient)
+        public LiveConnectSession(LiveAuthClient authClient)
         {
             this.AuthClient = authClient;
         }
 
-        internal LiveConnectSession()
+        public LiveConnectSession()
         {
         }
 
@@ -22,14 +22,14 @@
 
         #region Properties
 
-        public string AccessToken { get; internal set; }
+        public string AccessToken { get; set; }
 
-        public string AuthenticationToken { get; internal set; }
+        public string AuthenticationToken { get; set; }
 
 #if !WINDOWS_STORE
-        public DateTimeOffset Expires { get; internal set; }
-        
-        public string RefreshToken { get; internal set; }
+        public DateTimeOffset Expires { get; set; }
+
+        public string RefreshToken { get; set; }
 
         public IEnumerable<string> Scopes { get; internal set; }
 
@@ -42,7 +42,7 @@
             }
         }
 #endif
-        internal LiveAuthClient AuthClient { get; set; }
+        public LiveAuthClient AuthClient { get; set; }
 
         #endregion
     }

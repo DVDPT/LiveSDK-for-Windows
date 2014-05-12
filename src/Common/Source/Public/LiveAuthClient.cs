@@ -105,7 +105,7 @@
                 return this.session;
             }
 
-            internal set
+            set
             {
                 this.session = value;
                 this.NotifyPropertyChanged("Session");

@@ -38,7 +38,7 @@
         #endregion
 
         #region Properties
-        
+
         private ThemeType Theme
         {
             get { return Platform.GetThemeType(); }
@@ -76,6 +76,11 @@
 
             // Use a refresh token if present, if not, use silent flow.
             LiveConnectSession currentSession = this.AuthClient.LoadSession(this);
+            return await DoInitialize(scopes, currentSession);
+        }
+
+        private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession)
+        {
             this.scopes = (scopes == null) ? new List<string>() : new List<string>(scopes);
 
             bool hasRefreshToken = currentSession != null && !string.IsNullOrEmpty(currentSession.RefreshToken);
@@ -112,6 +117,11 @@
 
             // If we do NOT have a refresh token, use the silent flow.
             return await this.AuthenticateAsync(true /* silent flow */);
+        }
+
+        public  Task<LiveLoginResult> InitializeWithLocal(LiveConnectSession session, IEnumerable<string> scopes)
+        {
+            return DoInitialize(scopes, session);
         }
 
         /// <summary>
