@@ -2,7 +2,7 @@ LiveSDK for Windows and Windows Phone
 ================
 version 5.6
 
-0. Multi Account Support
+-1. Multi Account Support
 Use the login flow as usual, but in the end logout, saving the session.
 ```
 var session = ....
