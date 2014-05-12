@@ -2,6 +2,13 @@ LiveSDK for Windows and Windows Phone
 ================
 version 5.6
 
+0. Multi Account Support
+Use the login flow as usual, but in the end logout, saving the session.
+'''
+var session = ....
+var authClient = new LiveAuthClient("xxxx");
+var res = await authClient.InitializeWithLocal(session, scopes);
+'''
 1. Introduction
 ---------------
 
