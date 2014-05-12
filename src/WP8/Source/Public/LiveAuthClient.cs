@@ -81,7 +81,6 @@
 
         private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession)
         {
-            currentSession.AuthClient = this;
             this.scopes = (scopes == null) ? new List<string>() : new List<string>(scopes);
 
             bool hasRefreshToken = currentSession != null && !string.IsNullOrEmpty(currentSession.RefreshToken);
@@ -122,6 +121,7 @@
 
         public  Task<LiveLoginResult> InitializeWithLocalAsync(LiveConnectSession session, IEnumerable<string> scopes)
         {
+            session.AuthClient = this;
             return DoInitialize(scopes, session);
         }
 
