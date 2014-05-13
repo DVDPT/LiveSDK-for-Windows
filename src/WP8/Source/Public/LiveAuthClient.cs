@@ -79,7 +79,7 @@
             return await DoInitialize(scopes, currentSession);
         }
 
-        private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession)
+        private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession, bool isLocal = false)
         {
             this.scopes = (scopes == null) ? new List<string>() : new List<string>(scopes);
 
@@ -99,7 +99,8 @@
                 {
                     LiveLoginResult refreshOpResult = await refreshOp.ExecuteAsync();
                     this.Session = refreshOpResult.Session;
-                    this.AuthClient.SaveSession(this.Session);
+                    if (isLocal == false)
+                        this.AuthClient.SaveSession(this.Session);
                     tcs.TrySetResult(refreshOpResult);
                 }
                 catch (Exception exception)
@@ -116,13 +117,13 @@
             }
 
             // If we do NOT have a refresh token, use the silent flow.
-            return await this.AuthenticateAsync(true /* silent flow */);
+            return await this.AuthenticateAsync(true /* silent flow */, isLocal);
         }
 
-        public  Task<LiveLoginResult> InitializeWithLocalAsync(LiveConnectSession session, IEnumerable<string> scopes)
+        public Task<LiveLoginResult> InitializeWithLocalAsync(LiveConnectSession session, IEnumerable<string> scopes)
         {
             session.AuthClient = this;
-            return DoInitialize(scopes, session);
+            return DoInitialize(scopes, session, isLocal: true);
         }
 
         /// <summary>
@@ -248,7 +249,7 @@
             return refreshOp.ExecuteAsync();
         }
 
-        private Task<LiveLoginResult> AuthenticateAsync(bool useSilentFlow)
+        private Task<LiveLoginResult> AuthenticateAsync(bool useSilentFlow, bool isLocal = false)
         {
             var tcs = new TaskCompletionSource<LiveLoginResult>();
 
@@ -275,7 +276,8 @@
                             else
                             {
                                 this.Session = result.Session;
-                                this.AuthClient.SaveSession(this.Session);
+                                if (isLocal == false)
+                                    this.AuthClient.SaveSession(this.Session);
                                 tcs.TrySetResult(result);
                             }
 
