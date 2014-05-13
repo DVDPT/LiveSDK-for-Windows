@@ -79,7 +79,7 @@
             return await DoInitialize(scopes, currentSession);
         }
 
-        private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession)
+        private async Task<LiveLoginResult> DoInitialize(IEnumerable<string> scopes, LiveConnectSession currentSession, bool isLocal = false)
         {
             this.scopes = (scopes == null) ? new List<string>() : new List<string>(scopes);
 
@@ -99,7 +99,8 @@
                 {
                     LiveLoginResult refreshOpResult = await refreshOp.ExecuteAsync();
                     this.Session = refreshOpResult.Session;
-                    this.AuthClient.SaveSession(this.Session);
+                    if (isLocal == false)
+                        this.AuthClient.SaveSession(this.Session);
                     tcs.TrySetResult(refreshOpResult);
                 }
                 catch (Exception exception)
@@ -119,10 +120,10 @@
             return await this.AuthenticateAsync(true /* silent flow */);
         }
 
-        public  Task<LiveLoginResult> InitializeWithLocalAsync(LiveConnectSession session, IEnumerable<string> scopes)
+        public Task<LiveLoginResult> InitializeWithLocalAsync(LiveConnectSession session, IEnumerable<string> scopes)
         {
             session.AuthClient = this;
-            return DoInitialize(scopes, session);
+            return DoInitialize(scopes, session, isLocal: true);
         }
 
         /// <summary>
